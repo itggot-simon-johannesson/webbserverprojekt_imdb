@@ -5,7 +5,18 @@ html
         meta name="viewport" content="width=device-width,initial-scale=1"
         script language="JavaScript" type="text/javascript" src="js/jquery-3.2.1.min.js"
         script language="JavaScript" type="text/javascript" src="js/main.js"
+        link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet"
     body
 
-    .background
+        .background
+            
+            nav
+                .button
+                    a href="/login" Login
+                .button
+                    a href="/" IMDB
+                .button
+                    a href="/signup" Signup
+
+
             == yield

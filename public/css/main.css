@@ -1,3 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lobster', cursive;
+}
+
+nav {
+    background-image: url("../img/banner.svg");
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: absolute
+}
+
+.button {
+    background-color: #ffe757;
+    height: 100%;
+    width: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.button a {
+    font-size: 3vw;
+    text-decoration: none;
+    color: #9f089e;
+}
+
 .background {
-   background-image: url("./img/background.svg"); 
+    background-image: url("../img/background.svg");
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%; 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+ }
+
+h1.signup.login {
+    margin-top: 15%;
+    margin-right: 5%;
+}
+
+.container.login, .container.login form {
+    width: 25vw;
+    height: 15vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 10%;
+}
+
+.container.signup, .container.signup form {
+    width: 25vw;
+    height: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 10%;
 }

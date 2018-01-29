@@ -5,6 +5,7 @@ require 'bundler'
 Bundler.require
 
 #Load models
+require_relative 'models/users.rb'
 
 #Load the app
 require_relative 'imdb.rb'
