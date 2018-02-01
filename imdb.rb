@@ -13,11 +13,11 @@ class Imdb < Sinatra::Base
     post '/signup' do
         user_info = []
         
-        user_info << @firstname = params[:firstname]
-        user_info << @lastname = params[:lastname]
-        user_info << @username = params[:username]
-        user_info << @mail = params[:mail]
-        user_info << @password = params[:password]
+        user_info << @firstname = params[:firstname].to_s
+        user_info << @lastname = params[:lastname].to_s
+        user_info << @username = params[:username].to_s
+        user_info << @mail = params[:mail].to_s
+        user_info << @password = params[:password].to_s
 
         Users.create(user_info)
 
@@ -32,8 +32,8 @@ class Imdb < Sinatra::Base
     post '/login' do
         user_info = []
 
-        user_info << @mail_username = params[:mail]
-        user_info << @password = params[:password]
+        user_info << @mail_username = params[:mail].to_s
+        user_info << @password = params[:password].to_s
         
         Users.login(user_info, session)
 
