@@ -7,9 +7,18 @@ html
         script language="JavaScript" type="text/javascript" src="js/main.js"
         link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet"
     body
-
-        .background
-            
+        - if session[:login] == true
+            nav
+                .button
+                    a href="/logout" Logout
+                .button
+                    a href="/" IMDB
+                .button
+                    form action="/" method="post"
+                        input type="search" name="search" id="id"
+                .button
+                    a href="/users/#{@user.id}" Profile
+        - else
             nav
                 .button
                     a href="/login" Login
@@ -17,6 +26,8 @@ html
                     a href="/" IMDB
                 .button
                     a href="/signup" Signup
+
+        .background
 
 
             == yield

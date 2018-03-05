@@ -6,6 +6,7 @@ Bundler.require
 
 #Load models
 require_relative 'models/users.rb'
+require_relative 'models/sql.rb'
 
 #Load the app
 require_relative 'imdb.rb'

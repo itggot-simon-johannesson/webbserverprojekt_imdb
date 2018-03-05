@@ -1,0 +1,18 @@
+h1.title Profile
+
+
+- if @user.type == "admin"
+
+    .container.profile
+        h3.profile First name: #{Users.info_by_id(@id).firstname.capitalize}
+        h3.profile Last name: #{Users.info_by_id(@id).lastname.capitalize}
+        h3.profile Mail: #{Users.info_by_id(@id).mail}
+        h3.profile Username: #{Users.info_by_id(@id).username}
+        
+- else
+
+    .container.profile
+        h3.profile First name: #{@user.firstname.capitalize}
+        h3.profile Last name: #{@user.lastname.capitalize}
+        h3.profile Mail: #{@user.mail}
+        h3.profile Username: #{@user.username}

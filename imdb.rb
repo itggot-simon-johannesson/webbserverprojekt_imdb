@@ -1,8 +1,17 @@
 class Imdb < Sinatra::Base
 
-    enable :session
+    enable :sessions
 
     get '/' do
+
+
+
+
+
+        if session[:login] == true
+           p @user = Users.info_by_mail(session[:mail])
+        end
+        
         slim :main
     end
 
@@ -13,16 +22,16 @@ class Imdb < Sinatra::Base
     post '/signup' do
         user_info = []
         
-        user_info << @firstname = params[:firstname].to_s
-        user_info << @lastname = params[:lastname].to_s
-        user_info << @username = params[:username].to_s
-        user_info << @mail = params[:mail].to_s
-        user_info << @password = params[:password].to_s
+        user_info << params[:firstname].to_s
+        user_info << params[:lastname].to_s
+        user_info << params[:username].to_s
+        user_info << params[:mail].to_s
+        user_info << params[:password].to_s
 
         Users.create(user_info)
+        Users.login([user_info[3],user_info[4]], session)
 
-        
-        slim :signup
+        redirect "/"
     end
     
     get '/login' do
@@ -32,12 +41,39 @@ class Imdb < Sinatra::Base
     post '/login' do
         user_info = []
 
-        user_info << @mail_username = params[:mail].to_s
-        user_info << @password = params[:password].to_s
+        user_info << params[:mail].to_s
+        user_info << params[:password].to_s
         
         Users.login(user_info, session)
 
-        slim :login
+        if session[:login] == true
+            redirect "/"
+        else
+            redirect "/login"
+        end      
+
+    end
+
+    get '/users/:id' do
+        if session[:login] == true
+
+            @id = params['id'].to_i
+            @user = Users.info_by_mail(session[:mail])
+
+            if @user.type == "normal" and @id != @user.id
+                redirect "/users/#{@user.id}"
+            end
+
+            slim :profile
+        else
+            redirect "/login"
+        end    
+   
+    end
+
+    get '/logout' do
+		session.destroy
+		redirect '/login'
     end
 
 end
