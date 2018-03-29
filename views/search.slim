@@ -1,0 +1,36 @@
+.container.search
+    form.filter action="/filter" method="post"
+
+        - if @film_filter == "yes"
+            input type="checkbox" name="films" checked="" id="id" Films
+        - else
+            input type="checkbox" name="films" id="id" Films
+
+        - if @user_filter == "yes"
+            input type="checkbox" name="users" checked="" id="id" Users
+        - else
+            input type="checkbox" name="users" id="id" Users
+
+        - if @star_filter == "yes"
+            input type="checkbox" name="stars" checked="" id="id" Stars
+        - else
+            input type="checkbox" name="stars" id="id" Stars
+
+        input.filter type="search" name="search" id="id" value="#{@search}"
+
+        button type="submit" filter
+
+    h2 Films:
+
+    - if @films != nil and @film_filter == "yes"
+        - @films.each do |film|
+            a href="/films/#{film.id}" #{film.title.upcase}
+
+    h2 Users:
+
+    - if @users != nil and @user_filter == "yes"
+        - @users.each do |user|
+            a href="/users/#{user.id}" #{user.username.upcase}
+
+    h2 Stars:
+    

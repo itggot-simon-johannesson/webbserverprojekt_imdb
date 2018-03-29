@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
+gem 'sinatra-flash', require: 'sinatra/flash'
 gem 'sqlite3'
 gem 'rerun', github: 'alexch/rerun'
 gem 'slim'

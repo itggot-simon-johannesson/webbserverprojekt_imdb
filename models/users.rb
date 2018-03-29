@@ -1,16 +1,21 @@
-class Users
+class Users < BaseClass
 
     attr_reader :id, :username, :firstname, :lastname, :mail, :password, :type
 
-    def initialize(array)
-        @id = array[0]
-        @username = array[1]
-        @firstname = array[2]
-        @lastname = array[3]
-        @mail = array[4]
-        @password = array[5] 
-        @type = array[6]   
-    end
+    table_name 'users'
+    #column_names ['username', 'firstname', 'lastname', 'mail', 'password', 'type']
+
+    #column 'username', String, {required: true}
+
+    # def initialize(array)
+    #     @id = array[0]
+    #     @username = array[1]
+    #     @firstname = array[2]
+    #     @lastname = array[3]
+    #     @mail = array[4]
+    #     @password = array[5] 
+    #     @type = array[6]   
+    # end
 
     def self.create(user_info)
         db = SQLite3::Database.open('db/imdb.sqlite')
@@ -34,40 +39,50 @@ class Users
 
     end
 
-    def self.login(user_info, session)
+    def self.login(submitted_mail, submitted_password)
         db = SQLite3::Database.open('db/imdb.sqlite')
-        empty = []
-
-        mail = user_info[0]
-        password = user_info[1]
-
-        if db.execute('SELECT password FROM users WHERE mail IS ?', mail) == empty
-            puts "ERROR: WRONG MAIL OR PASSWORD"
-            return
-        else
-            encrypted_password = db.execute('SELECT password FROM users WHERE mail IS ?', mail).first.first
-            uncrypted_password = BCrypt::Password.new(encrypted_password)
+        user = Users.info_by_mail(submitted_mail)
+        if !user || BCrypt::Password.new(user.password) != submitted_password
+            return false
         end
-
-        if db.execute('SELECT mail FROM users WHERE mail IS ?', mail) == empty or uncrypted_password != password
-            puts "ERROR: WRONG MAIL OR PASSWORD"
-        else
-            session[:mail] =  mail
-            session[:login] = true
-            puts "SUXES"
-        end
-    end
-
-    def self.info_by_id(id)
-        db = SQLite3::Database.open('db/imdb.sqlite')
-        user_info = db.execute('SELECT * FROM users WHERE id IS ?', id).first
-        return Users.new(user_info)
+        return user
     end
 
     def self.info_by_mail(mail)
         db = SQLite3::Database.open('db/imdb.sqlite')
         user_info = db.execute('SELECT * FROM users WHERE mail IS ?', mail).first
-        return Users.new(user_info)
+        if user_info
+            return Users.new(user_info)
+        else
+            return false
+        end
     end
+
+    def self.info_by_username(username)
+        db = SQLite3::Database.open('db/imdb.sqlite')
+        user_info = db.execute('SELECT * FROM users WHERE title LIKE "%?%"', username).first
+        return users.new(user_info)
+    end
+
+    def self.info_by_username(username)
+        db = SQLite3::Database.open('db/imdb.sqlite')
+
+        if db.execute("SELECT * FROM users WHERE username LIKE ? ", username.downcase)[0] == nil
+            return nil
+        else
+            users_info = []
+            users = db.execute("SELECT * FROM users WHERE username LIKE ? ", username.downcase)
+
+            users.each do |user|
+                users_info << Users.new(user)
+            end
+
+            return users_info
+        end
+
+    end
+
+    
+
 
 end

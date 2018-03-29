@@ -33,6 +33,8 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
     slim (3.0.9)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 1.3.3, < 2.1)
@@ -49,6 +51,7 @@ DEPENDENCIES
   pony
   rerun!
   sinatra
+  sinatra-flash
   slim
   sqlite3
 

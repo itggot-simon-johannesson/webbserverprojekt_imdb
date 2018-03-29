@@ -7,23 +7,32 @@ html
         script language="JavaScript" type="text/javascript" src="js/main.js"
         link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet"
     body
-        - if session[:login] == true
+        - if @user
             nav
                 .button
                     a href="/logout" Logout
-                .button
-                    a href="/" IMDB
-                .button
-                    form action="/" method="post"
-                        input type="search" name="search" id="id"
+                .middle
+                    .button
+                        a href="/" IMDB
+                    - if @search_page != true
+                        .button.search
+                            form action="/search" method="post"
+                                input type="search" name="search" id="id"
+                                button type="submit" Search
                 .button
                     a href="/users/#{@user.id}" Profile
         - else
             nav
                 .button
                     a href="/login" Login
-                .button
-                    a href="/" IMDB
+                .middle
+                    .button
+                        a href="/" IMDB
+                    - if @search_page != true
+                        .button.search
+                            form action="/search" method="post"
+                                input type="search" name="search" id="id"
+                                button type="submit" Search
                 .button
                     a href="/signup" Signup
 

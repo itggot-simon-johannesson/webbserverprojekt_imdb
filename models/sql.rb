@@ -1,5 +1,6 @@
 class Sql
-    def initialize
+    def initialize(array)
+        @id = array[0]
         
     end
 
@@ -19,17 +20,23 @@ class Sql
 
     # end
 
-    def self.edit(table_name,columns)
+    # def self.edit(table_name,columns)
 
-        # UPDATE table_name
-        # SET column1 = value1, column2 = value2, ...
-        # WHERE condition;
+    #     UPDATE table_name
+    #     SET column1 = value1, column2 = value2, ...
+    #     WHERE condition;
+
+    # end
+
+    # def self.get_info(column, table, info)
+    #     db = SQLite3::Database.open('db/imdb.sqlite')
 
 
 
 
-
-    end
+    
+    
+    # end
 
 
 end

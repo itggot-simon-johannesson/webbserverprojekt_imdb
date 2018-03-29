@@ -1,18 +1,28 @@
 h1.title Profile
 
-
 - if @user.type == "admin"
 
     .container.profile
-        h3.profile First name: #{Users.info_by_id(@id).firstname.capitalize}
-        h3.profile Last name: #{Users.info_by_id(@id).lastname.capitalize}
-        h3.profile Mail: #{Users.info_by_id(@id).mail}
-        h3.profile Username: #{Users.info_by_id(@id).username}
+        h3 First name: #{@user.firstname.capitalize}
+        h3 Last name: #{@user.lastname.capitalize}
+        h3 Mail: #{@user.mail}
+        h3 Username: #{@user.username}
+        h3 Reviews:
         
-- else
+- elsif Users.info_by_id(@id).mail == session[:mail]
 
     .container.profile
-        h3.profile First name: #{@user.firstname.capitalize}
-        h3.profile Last name: #{@user.lastname.capitalize}
-        h3.profile Mail: #{@user.mail}
-        h3.profile Username: #{@user.username}
+        h3 First name: #{@user.firstname.capitalize}
+        h3 Last name: #{@user.lastname.capitalize}
+        h3 Mail: #{@user.mail}
+        h3 Username: #{@user.username}
+        h3 Reviews:
+
+- else
+    
+    .container.profile
+        h2 #{Users.info_by_id(@user_id).username}
+        h3 Reviews:
+
+    
+    

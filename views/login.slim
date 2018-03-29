@@ -1,5 +1,7 @@
 h1.signup.login Login
 .container.login
+        - if flash[:error]
+            p = flash[:error]
         form action="/login" method="post"
             label for='mail' Mail:
             input type="mail" name="mail" id="id"
