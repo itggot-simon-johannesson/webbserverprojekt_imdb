@@ -5,11 +5,7 @@ require 'bundler'
 Bundler.require
 
 #Load models
-require_relative 'models/baseclass.rb'
-require_relative 'models/users.rb'
-require_relative 'models/sql.rb'
-require_relative 'models/films.rb'
-require_relative 'models/genre.rb'
+Dir.glob("models/*.rb").map { |dir| require_relative dir}
 
 #Load the app
 require_relative 'imdb.rb'

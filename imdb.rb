@@ -5,12 +5,12 @@ class Imdb < Sinatra::Base
 
     get '/' do
 
-        p Films.get()
-
         if session[:id]
-            p @user = Users.get("id", session[:id])
+            @user = Users.get("id", session[:id], "is")
         end
-        
+
+        User.create({"username"=>"q", "firstname"=>"q", "lastname"=>"q", "mail"=>"q", "password"=>"q"})
+
         slim :main
     end
 
@@ -19,7 +19,7 @@ class Imdb < Sinatra::Base
     end
 
     post '/signup' do
-        user = Users.create(params)
+        user = User.create(params)
         redirect "/"
     end
     
