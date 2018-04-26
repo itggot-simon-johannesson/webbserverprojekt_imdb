@@ -93,6 +93,7 @@ class BaseClass
 
     #INTE KLAR
     def self.create(params)
+        p @column_names
         params
         column_names = @column_names
         result_from_db = self.exist?(params[column_name.first], column_names.first, false)
@@ -106,16 +107,15 @@ class BaseClass
             end
 
             if column_name[1][:crypt]
-
             end
 
             if column_name[1][:required]
-                if 
-                end
             end 
+        end
 
+    end
 
-        end   
+    #     end   
         
         # db = SQLite3::Database.open('db/imdb.sqlite')
 
@@ -129,7 +129,7 @@ class BaseClass
             
         #     ")
 
-    end
+    # end
 
 
 
