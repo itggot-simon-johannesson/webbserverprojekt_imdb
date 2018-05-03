@@ -32,9 +32,9 @@ class BaseClass
                 end
 
             else
-
                 result_from_db = db.execute("SELECT * FROM #{@table_name} WHERE #{column_name} IS ?", value)
-                
+
+
                 if result_from_db == empty
                     return false
                 else
@@ -93,24 +93,23 @@ class BaseClass
 
     #INTE KLAR
     def self.create(params)
-        p @column_names
-        params
         column_names = @column_names
-        result_from_db = self.exist?(params[column_name.first], column_names.first, false)
         
         column_names.each do |column_name|
+            
+            if column_name[1][:required] and column_name[0] != "id"
+                return "#{column_name[0]} is not filled in" if params[column_name[0]] == nil
+            end 
 
-            if column_name[1][:unique]
-                if result_from_db
-                    return "#{column_name} already exists"
-                end
+            if column_name[1][:unique] and column_name[0] != "id"
+                result_from_db = self.exist?(params[column_name[0]], column_name[0], false)
+                return "#{column_name[0]} already exists" if result_from_db
             end
 
             if column_name[1][:crypt]
+                params[column_name[0]] = BCrypt::Password.create(params[column_name[0]])
             end
 
-            if column_name[1][:required]
-            end 
         end
 
     end

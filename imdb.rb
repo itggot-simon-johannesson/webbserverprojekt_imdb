@@ -9,7 +9,7 @@ class Imdb < Sinatra::Base
             @user = Users.get("id", session[:id], "is")
         end
 
-        User.create({"username"=>"q", "firstname"=>"q", "lastname"=>"q", "mail"=>"q", "password"=>"q"})
+        p User.create({"username"=> nil, "firstname"=>"q", "lastname"=>"q", "mail"=>"q", "password"=>"q"})
 
         slim :main
     end
