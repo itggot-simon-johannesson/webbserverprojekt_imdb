@@ -9,6 +9,15 @@ class BaseClass
         @column_names[names] = options
     end
 
+    
+
+    # def initialize(hash)
+    #     @column_names.keys.each do |column_name|
+    #         instance_variable_set("@#{column_name}", hash["#{column_name}"])
+    #         p "@#{column_name}"
+    #     end
+    # end
+
     def self.exist?(value, column_name, like)
         empty = []
 
@@ -91,15 +100,17 @@ class BaseClass
         end
     end
 
-    #INTE KLAR
     def self.create(params)
         column_names = @column_names
+        db = SQLite3::Database.open('db/imdb.sqlite')
         
         column_names.each do |column_name|
             
+            params["type"] = column_name[1][:default] if column_name[1][:default]
+
             if column_name[1][:required] and column_name[0] != "id"
                 return "#{column_name[0]} is not filled in" if params[column_name[0]] == nil
-            end 
+            end
 
             if column_name[1][:unique] and column_name[0] != "id"
                 result_from_db = self.exist?(params[column_name[0]], column_name[0], false)
@@ -112,25 +123,10 @@ class BaseClass
 
         end
 
+        columns = params.keys.join(", ")
+        values = params.values.join("', '")
+        db.execute("INSERT INTO #{@table_name} (#{columns}) VALUES ('#{values}')")
+
     end
-
-    #     end   
-        
-        # db = SQLite3::Database.open('db/imdb.sqlite')
-
-        # db.execute("
-            
-        #     INSERT INTO #{@table_name}
-        #     (
-                
-        #     )
-            
-            
-        #     ")
-
-    # end
-
-
-
 
 end

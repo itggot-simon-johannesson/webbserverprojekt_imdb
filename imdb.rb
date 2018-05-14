@@ -3,14 +3,22 @@ class Imdb < Sinatra::Base
     enable :sessions
     register Sinatra::Flash
 
-    get '/' do
+    before do
+        blacklist_login = ['/login', '/signup']
+        blacklist = ['/user/:id']
 
-        if session[:id]
-            @user = Users.get("id", session[:id], "is")
+        if blacklist.include?(request.path)
+            redirect "/login" 
         end
 
-        p User.create({"username"=> nil, "firstname"=>"q", "lastname"=>"q", "mail"=>"q", "password"=>"q"})
+        if params[:id]
+            if blacklist_login.include?(request.path)
+                redirect "/user/#{params[:id]}"
+            end
+        end
+    end
 
+    get '/' do
         slim :main
     end
 
@@ -20,7 +28,7 @@ class Imdb < Sinatra::Base
 
     post '/signup' do
         user = User.create(params)
-        redirect "/"
+        redirect "/login"
     end
     
     get '/login' do
@@ -28,9 +36,9 @@ class Imdb < Sinatra::Base
     end
 
     post '/login' do
-        user = Users.login(params['mail'], params['password'])
-        if user
-            session[:id] = user.id
+        @user = User.login(params)
+        if @user
+            session[:id] = @user.id
             redirect "/"
         else
             flash[:error] = 'incorrect username or password'
@@ -39,14 +47,9 @@ class Imdb < Sinatra::Base
 
     end
 
-    get '/users/:id' do
-        if session[:id]
-            @user = Users.info_by('id', session[:id])
-            slim :profile
-        else
-            redirect "/login"
-        end    
-   
+    get '/user/:id' do
+        p @user
+        slim :profile
     end
 
     get '/logout' do
@@ -96,7 +99,7 @@ class Imdb < Sinatra::Base
 
 
 
-    get '/films/:id' do
+    get '/film/:id' do
         @film_id = params['id'].to_i
 
 

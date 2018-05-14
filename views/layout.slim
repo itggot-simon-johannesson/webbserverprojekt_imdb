@@ -7,7 +7,7 @@ html
         script language="JavaScript" type="text/javascript" src="js/main.js"
         link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet"
     body
-        - if @user
+        - if session[:id]
             nav
                 .button
                     a href="/logout" Logout
@@ -20,7 +20,7 @@ html
                                 input type="search" name="search" id="id"
                                 button type="submit" Search
                 .button
-                    a href="/users/#{@user.id}" Profile
+                    a href="/user/#{session[:id]}" Profile
         - else
             nav
                 .button

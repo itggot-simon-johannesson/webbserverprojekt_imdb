@@ -22,35 +22,13 @@ class User < BaseClass
         @type = hash["type"]
     end
 
-    def self.login(submitted_mail, submitted_password)
+    def self.login(params)
         db = SQLite3::Database.open('db/imdb.sqlite')
-        user = Users.info_by_mail(submitted_mail)
-        if !user || BCrypt::Password.new(user.password) != submitted_password
+        user = User.get(params["mail"], "mail", false)
+        if !user || BCrypt::Password.new(user.password) != params["password"]
             return false
         end
         return user
-    end
-
-    def self.create_old(user_info)
-        db = SQLite3::Database.open('db/imdb.sqlite')
-        empty = []
-        
-        username = user_info[0]
-        firstname = user_info[1]
-        lastname = user_info[2]
-        mail = user_info[3]
-        password = user_info[4]
-        type = "normal"
-    
-        if db.execute('SELECT username FROM users WHERE username IS ?', username) == empty and db.execute('SELECT mail FROM users WHERE mail IS ?', mail) == empty
-            password = BCrypt::Password.create(password)
-            user_info = db.execute('INSERT INTO users (username, firstname, lastname, mail, password, type) VALUES (?, ?, ?, ?, ?, ?)', [username, firstname, lastname, mail, password, type])
-            puts "SUXSES!"
-            return Users.new(user_info)
-        else
-            puts "ERROR: USER ALREADY EXISTS"
-        end
-
     end
 
 end

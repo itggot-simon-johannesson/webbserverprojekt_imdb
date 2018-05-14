@@ -1,1 +1,1 @@
-{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/simon.johannesson2/Documents/GitHub/webbserverprojekt_imdb","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/tmp/cache":{"guestpath":"/tmp/cache","hostpath":"C:/","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/simon.johannesson2/Documents/GitHub/webbserverprojekt_imdb","disabled":false,"__vagrantfile":true}}}

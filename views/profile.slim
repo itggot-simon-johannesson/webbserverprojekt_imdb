@@ -9,20 +9,20 @@ h1.title Profile
         h3 Username: #{@user.username}
         h3 Reviews:
         
-- elsif Users.info_by_id(@id).mail == session[:mail]
+/ - elsif User.info_by_id(@id).mail == session[:mail]
 
-    .container.profile
-        h3 First name: #{@user.firstname.capitalize}
-        h3 Last name: #{@user.lastname.capitalize}
-        h3 Mail: #{@user.mail}
-        h3 Username: #{@user.username}
-        h3 Reviews:
+/     .container.profile
+/         h3 First name: #{@user.firstname.capitalize}
+/         h3 Last name: #{@user.lastname.capitalize}
+/         h3 Mail: #{@user.mail}
+/         h3 Username: #{@user.username}
+/         h3 Reviews:
 
-- else
+/ - else
     
-    .container.profile
-        h2 #{Users.info_by_id(@user_id).username}
-        h3 Reviews:
+/     .container.profile
+/         h2 #{Users.info_by_id(@user_id).username}
+/         h3 Reviews:
 
     
     

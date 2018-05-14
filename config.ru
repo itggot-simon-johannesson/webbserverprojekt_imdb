@@ -5,7 +5,7 @@ require 'bundler'
 Bundler.require
 
 #Load models
-Dir.glob("models/*.rb").map { |dir| require_relative dir}
+Dir.glob("models/*.rb").map { |model| require_relative model}
 
 #Load the app
 require_relative 'imdb.rb'
