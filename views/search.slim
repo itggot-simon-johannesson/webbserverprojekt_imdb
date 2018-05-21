@@ -16,20 +16,31 @@
         - else
             input type="checkbox" name="user" id="id" Users
 
-        input.filter type="search" name="search" id="id" value="#{session[:search]}"
+        input.filter type="search" name="search" id="id" value="#{@filter["search"]}"
 
         button type="submit" filter
 
-    / h2 Films:
+    h2 Films:
 
-    / - if @films != nil and @film_filter == "yes"
-    /     - @films.each do |film|
-    /         a href="/films/#{film.id}" #{film.title.upcase}
+    - if @filter["film"]
+        - films = Film.get(@filter["search"], "title", true)
+        - if films
+            - films.each do |film|
+                a href="/film/#{film.id}" #{film.title.upcase}
 
-    / h2 Users:
+    h2 Workers:
 
-    / - if @users != nil and @user_filter == "yes"
-    /     - @users.each do |user|
-    /         a href="/users/#{user.id}" #{user.username.upcase}
+    - if @filter["worker"]
+        - workers = Worker.get(@filter["search"], "firstname", true)
+        - if workers
+            - workers.each do |worker|
+                a href="/worker/#{worker.id}" #{worker.firstname.upcase + " " + worker.lastname.upcase}
 
-    / h2 Stars:
+    h2 Users:
+
+    - if @filter["user"]
+        - p users = User.get(@filter["search"], "username", true)
+        - if users
+            - users.each do |user|
+                a href="/user/#{user.id}" #{user.username.upcase}
+

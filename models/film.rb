@@ -12,6 +12,4 @@ class Film < BaseClass
         @title = hash["title"]
     end
 
-
-
 end

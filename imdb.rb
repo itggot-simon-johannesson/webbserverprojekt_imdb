@@ -1,3 +1,5 @@
+require "pp"
+
 class Imdb < Sinatra::Base
 
     enable :sessions
@@ -76,11 +78,11 @@ class Imdb < Sinatra::Base
     end
 
     post '/search' do
-        redirect Search.path(params)
+        redirect "/search?" + URI.encode_www_form(params)
     end
 
     post '/filter' do
-        redirect Search.path(params)
+        redirect "/search?" + URI.encode_www_form(params)
     end
 
     get '/search' do
@@ -93,32 +95,5 @@ class Imdb < Sinatra::Base
         @film_id = params['id'].to_i
         slim :film
     end
-
-
-# (byebug) path
-# "/search?film=on&user=on&worker=on&search=hej jag heter simon&"
-# (byebug) URI.encode(path)
-# "/search?film=on&user=on&worker=on&search=hej%20jag%20heter%20simon&"
-# (byebug) filter
-# {"film"=>"on", "user"=>"on", "worker"=>"on", "search"=>"hej jag heter simon"}
-# (byebug) filter.join("&")
-# *** NoMethodError Exception: undefined method `join' for #<Hash:0x0055e30460abc0>
-
-# nil
-# (byebug) URI.encode_www_form(filter)
-# "film=on&user=on&worker=on&search=hej+jag+heter+simon"
-# (byebug) x = URI.encode_www_form(filter)
-# "film=on&user=on&worker=on&search=hej+jag+heter+simon"
-# (byebug) URI.decode(x)
-# "film=on&user=on&worker=on&search=hej+jag+heter+simon"
-# (byebug) URI.decode_www_form(x)
-# [["film", "on"], ["user", "on"], ["worker", "on"], ["search", "hej jag heter simon"]]
-# (byebug) URI.decode_www_form(x).to_hash
-# *** NoMethodError Exception: undefined method `to_hash' for #<Array:0x0055e3054e8368>
-# Did you mean?  to_h
-
-# nil
-# (byebug) URI.decode_www_form(x).to_h
-# {"film"=>"on", "user"=>"on", "worker"=>"on", "search"=>"hej jag heter simon"}
 
 end
