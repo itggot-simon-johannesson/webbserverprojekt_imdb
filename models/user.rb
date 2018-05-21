@@ -4,7 +4,7 @@ class User < BaseClass
 
     table_name 'user'
 
-    column_name 'id', required: true, unique: true
+    column_name 'id', required: true, unique: true, primary_key: true
     column_name 'username', required: true
     column_name 'firstname', required: true
     column_name 'lastname', required: true
@@ -25,7 +25,7 @@ class User < BaseClass
     def self.login(params)
         db = SQLite3::Database.open('db/imdb.sqlite')
         user = User.get(params["mail"], "mail", false)
-        if !user || BCrypt::Password.new(user.password) != params["password"]
+        if !user and BCrypt::Password.new(user.password) != params["password"]
             return false
         end
         return user

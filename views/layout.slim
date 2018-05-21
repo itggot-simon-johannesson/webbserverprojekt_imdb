@@ -17,6 +17,9 @@ html
                     - if @search_page != true
                         .button.search
                             form action="/search" method="post"
+                                input type="hidden" name="film" value="on"
+                                input type="hidden" name="worker" value="on"
+                                input type="hidden" name="user" value="on"
                                 input type="search" name="search" id="id"
                                 button type="submit" Search
                 .button
@@ -31,6 +34,9 @@ html
                     - if @search_page != true
                         .button.search
                             form action="/search" method="post"
+                                input type="hidden" name="film" value="on"
+                                input type="hidden" name="worker" value="on"
+                                input type="hidden" name="user" value="on"
                                 input type="search" name="search" id="id"
                                 button type="submit" Search
                 .button

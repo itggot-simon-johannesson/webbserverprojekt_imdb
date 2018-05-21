@@ -4,18 +4,25 @@ class Imdb < Sinatra::Base
     register Sinatra::Flash
 
     before do
+        params.delete(:captures) if params.key?(:captures) && params[:captures].empty?
+
         blacklist_login = ['/login', '/signup']
-        blacklist = ['/user/:id']
+        blackpath = /^\/user\/\d+/
 
-        if blacklist.include?(request.path)
-            redirect "/login" 
-        end
+        if session[:id]
+            @user = User.get(session[:id], "id", false)
 
-        if params[:id]
             if blacklist_login.include?(request.path)
-                redirect "/user/#{params[:id]}"
+                redirect "/user/#{session[:id]}"
             end
+
+        else
+            if blackpath.match(request.path)
+                redirect "/login"
+            end
+        
         end
+
     end
 
     get '/' do
@@ -28,7 +35,15 @@ class Imdb < Sinatra::Base
 
     post '/signup' do
         user = User.create(params)
-        redirect "/login"
+
+        if user.class == String
+            flash[:error] = user
+            redirect "signup"
+        else
+            flash[:error] = "suxes"
+            redirect "/login"
+        end
+
     end
     
     get '/login' do
@@ -36,19 +51,22 @@ class Imdb < Sinatra::Base
     end
 
     post '/login' do
-        @user = User.login(params)
-        if @user
-            session[:id] = @user.id
+        user = User.login(params)
+        if user and params["mail"] and params["password"]
+            session[:id] = user.id
             redirect "/"
         else
             flash[:error] = 'incorrect username or password'
             redirect "/login"
-        end      
+        end
 
     end
 
     get '/user/:id' do
-        p @user
+        if params["id"].to_i != @user.id
+            p @profile = User.get(params["id"], "id", false)
+        end
+
         slim :profile
     end
 
@@ -58,53 +76,49 @@ class Imdb < Sinatra::Base
     end
 
     post '/search' do
-        @search = params[:search]
-        
-        redirect "/search?search=#{@search}&films=yes&users=yes&stars=yes"
+        redirect Search.path(params)
     end
 
     post '/filter' do
-
-        @filters = [params[:films], params[:users], params[:stars]]
-        
-        @filters.each_with_index do |filter, i|
-            if filter == nil
-                @filters.delete_at(i)
-                @filters.insert(i, "no")
-            else
-                @filters.delete_at(i)
-                @filters.insert(i, "yes")
-            end
-        end
-
-        p @search = params[:search]
-
-        redirect "/search?search=#{@search}&films=#{@filters[0]}&users=#{@filters[1]}&stars=#{@filters[2]}"
+        redirect Search.path(params)
     end
 
     get '/search' do
-        @search = params[:search]
-        @film_filter = params[:films]
-        @user_filter = params[:users]
-        @star_filter = params[:stars]
-        
-
-        @films = Films.info_by_title("%" + @search + "%")
-        @users = Users.info_by_username("%" + @search + "%")
-
+        @filter = params
         @search_page = true
-
         slim :search
     end
 
-
-
     get '/film/:id' do
         @film_id = params['id'].to_i
-
-
-
         slim :film
     end
+
+
+# (byebug) path
+# "/search?film=on&user=on&worker=on&search=hej jag heter simon&"
+# (byebug) URI.encode(path)
+# "/search?film=on&user=on&worker=on&search=hej%20jag%20heter%20simon&"
+# (byebug) filter
+# {"film"=>"on", "user"=>"on", "worker"=>"on", "search"=>"hej jag heter simon"}
+# (byebug) filter.join("&")
+# *** NoMethodError Exception: undefined method `join' for #<Hash:0x0055e30460abc0>
+
+# nil
+# (byebug) URI.encode_www_form(filter)
+# "film=on&user=on&worker=on&search=hej+jag+heter+simon"
+# (byebug) x = URI.encode_www_form(filter)
+# "film=on&user=on&worker=on&search=hej+jag+heter+simon"
+# (byebug) URI.decode(x)
+# "film=on&user=on&worker=on&search=hej+jag+heter+simon"
+# (byebug) URI.decode_www_form(x)
+# [["film", "on"], ["user", "on"], ["worker", "on"], ["search", "hej jag heter simon"]]
+# (byebug) URI.decode_www_form(x).to_hash
+# *** NoMethodError Exception: undefined method `to_hash' for #<Array:0x0055e3054e8368>
+# Did you mean?  to_h
+
+# nil
+# (byebug) URI.decode_www_form(x).to_h
+# {"film"=>"on", "user"=>"on", "worker"=>"on", "search"=>"hej jag heter simon"}
 
 end

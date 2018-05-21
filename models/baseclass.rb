@@ -9,8 +9,6 @@ class BaseClass
         @column_names[names] = options
     end
 
-    
-
     # def initialize(hash)
     #     @column_names.keys.each do |column_name|
     #         instance_variable_set("@#{column_name}", hash["#{column_name}"])
@@ -108,6 +106,10 @@ class BaseClass
             
             params["type"] = column_name[1][:default] if column_name[1][:default]
 
+            if column_name[1][:primary_key]
+                
+            end
+
             if column_name[1][:required] and column_name[0] != "id"
                 return "#{column_name[0]} is not filled in" if params[column_name[0]] == nil
             end
@@ -126,6 +128,8 @@ class BaseClass
         columns = params.keys.join(", ")
         values = params.values.join("', '")
         db.execute("INSERT INTO #{@table_name} (#{columns}) VALUES ('#{values}')")
+
+        return true
 
     end
 
