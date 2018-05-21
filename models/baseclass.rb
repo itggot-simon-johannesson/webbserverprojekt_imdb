@@ -16,7 +16,10 @@ class BaseClass
     #     end
     # end
 
-    def self.exist?(value, column_name, like)
+    def self.exist?(hash)
+        value = hash["value"]
+        column_name = hash["column_name"]
+        like = hash["like"]
         empty = []
 
         if @column_names.has_key?(column_name)
@@ -55,9 +58,9 @@ class BaseClass
         end        
     end
 
-    def self.get(value, column_name, like)
+    def self.get(hash)
 
-        result_from_db = self.exist?(value, column_name, like)
+        result_from_db = self.exist?(hash)
 
         if result_from_db == false
             false
@@ -78,11 +81,13 @@ class BaseClass
         end
     end
 
-    def self.remove(value, column_name, like)
-        
-        result_from_db = self.exist?(value, column_name, like)
+    def self.remove(hash)
+        result_from_db = self.exist?(hash)
 
         if result_from_db
+            value = hash["value"]
+            column_name = hash["column_name"]
+            like = hash["like"]
             db = SQLite3::Database.open('db/imdb.sqlite')
 
             if like == true
@@ -106,16 +111,12 @@ class BaseClass
             
             params["type"] = column_name[1][:default] if column_name[1][:default]
 
-            if column_name[1][:primary_key]
-                
+            if column_name[1][:required] and column_name[1][:primary_key] == nil
+                return "#{column_name[0]} is not filled in" if params[column_name[0]] == nil or params[column_name[0]] == ""
             end
 
-            if column_name[1][:required] and column_name[0] != "id"
-                return "#{column_name[0]} is not filled in" if params[column_name[0]] == nil
-            end
-
-            if column_name[1][:unique] and column_name[0] != "id"
-                result_from_db = self.exist?(params[column_name[0]], column_name[0], false)
+            if column_name[1][:unique] and column_name[1][:primary_key] == nil
+                result_from_db = self.exist?({"value" => params[column_name[0]], "column_name" => column_name[0], "like" => false})
                 return "#{column_name[0]} already exists" if result_from_db
             end
 
@@ -127,6 +128,7 @@ class BaseClass
 
         columns = params.keys.join(", ")
         values = params.values.join("', '")
+
         db.execute("INSERT INTO #{@table_name} (#{columns}) VALUES ('#{values}')")
 
         return true

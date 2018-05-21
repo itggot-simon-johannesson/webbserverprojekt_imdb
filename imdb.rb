@@ -12,7 +12,7 @@ class Imdb < Sinatra::Base
         blackpath = /^\/user\/\d+/
 
         if session[:id]
-            @user = User.get(session[:id], "id", false)
+            @user = User.get({"value" => session[:id], "column_name" => "id", "like" => false})
 
             if blacklist_login.include?(request.path)
                 redirect "/user/#{session[:id]}"
@@ -66,7 +66,7 @@ class Imdb < Sinatra::Base
 
     get '/user/:id' do
         if params["id"].to_i != @user.id
-            p @profile = User.get(params["id"], "id", false)
+            @profile = User.get({"value" => params["id"], "column_name" => "id", "like" => false})
         end
 
         slim :profile

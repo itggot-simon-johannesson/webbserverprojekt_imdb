@@ -23,7 +23,7 @@
     h2 Films:
 
     - if @filter["film"]
-        - films = Film.get(@filter["search"], "title", true)
+        - films = Film.get({"value" => @filter["search"], "column_name" => "title", "like" => true})
         - if films
             - films.each do |film|
                 a href="/film/#{film.id}" #{film.title.upcase}
@@ -31,7 +31,7 @@
     h2 Workers:
 
     - if @filter["worker"]
-        - workers = Worker.get(@filter["search"], "firstname", true)
+        - workers = Worker.get({"value" => @filter["search"], "column_name" => "firstnames", "like" => true})
         - if workers
             - workers.each do |worker|
                 a href="/worker/#{worker.id}" #{worker.firstname.upcase + " " + worker.lastname.upcase}
@@ -39,7 +39,7 @@
     h2 Users:
 
     - if @filter["user"]
-        - p users = User.get(@filter["search"], "username", true)
+        - users = User.get({"value" => @filter["search"], "column_name" => "username", "like" => true})
         - if users
             - users.each do |user|
                 a href="/user/#{user.id}" #{user.username.upcase}

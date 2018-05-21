@@ -24,8 +24,8 @@ class User < BaseClass
 
     def self.login(params)
         db = SQLite3::Database.open('db/imdb.sqlite')
-        user = User.get(params["mail"], "mail", false)
-        if !user and BCrypt::Password.new(user.password) != params["password"]
+        user = User.get({"value" => params["mail"], "column_name" => "mail", "like" => false})
+        if !user or BCrypt::Password.new(user.password) != params["password"]
             return false
         end
         return user

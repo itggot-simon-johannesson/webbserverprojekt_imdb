@@ -4,7 +4,7 @@ class Film < BaseClass
 
     table_name 'film'
 
-    column_name 'id', required: true, unique: true
+    column_name 'id', required: true, unique: true, primary_key: true
     column_name 'title', required: true
 
     def initialize(hash)
