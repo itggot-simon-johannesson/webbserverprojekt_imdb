@@ -7,9 +7,6 @@ class Film < BaseClass
     column_name 'id', required: true, unique: true, primary_key: true
     column_name 'title', required: true
 
-    def initialize(hash)
-        @id = hash["id"]
-        @title = hash["title"]
-    end
+    
 
 end

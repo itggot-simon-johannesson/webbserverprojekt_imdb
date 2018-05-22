@@ -14,15 +14,9 @@ class Imdb < Sinatra::Base
         if session[:id]
             @user = User.get({"value" => session[:id], "column_name" => "id", "like" => false})
 
-            if blacklist_login.include?(request.path)
-                redirect "/user/#{session[:id]}"
-            end
-
+            redirect "/user/#{session[:id]}" if blacklist_login.include?(request.path)
         else
-            if blackpath.match(request.path)
-                redirect "/login"
-            end
-        
+            redirect "/login" if blackpath.match(request.path)                
         end
 
     end
@@ -92,7 +86,8 @@ class Imdb < Sinatra::Base
     end
 
     get '/film/:id' do
-        @film_id = params['id'].to_i
+        id = params['id'].to_i
+        @film = Film.get("value" => id, "column_name" => "id", "like" => false)
         slim :film
     end
 

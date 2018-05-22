@@ -8,12 +8,5 @@ class Worker < BaseClass
     column_name 'firstname', required: true
     column_name 'lastname', required: true
     column_name 'type', required: true, default: "normal"
-    
-    def initialize(hash)
-        @id = hash["id"]
-        @firstname = hash["firstname"]
-        @lastname = hash["lastname"]
-        @type = hash["type"]
-    end
 
 end

@@ -11,23 +11,12 @@ class User < BaseClass
     column_name 'mail', required: true, unique: true
     column_name 'password', required: true, crypt: true
     column_name 'type', required: true, default: "normal"
-    
-    def initialize(hash)
-        @id = hash["id"]
-        @username = hash["username"]
-        @firstname = hash["firstname"]
-        @lastname = hash["lastname"]
-        @mail = hash["mail"]
-        @password = hash["password"]
-        @type = hash["type"]
-    end
 
     def self.login(params)
         db = SQLite3::Database.open('db/imdb.sqlite')
         user = User.get({"value" => params["mail"], "column_name" => "mail", "like" => false})
-        if !user or BCrypt::Password.new(user.password) != params["password"]
-            return false
-        end
+        
+        return false if !user or BCrypt::Password.new(user.password) != params["password"]
         return user
     end
 

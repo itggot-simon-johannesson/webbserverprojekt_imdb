@@ -9,12 +9,9 @@ class BaseClass
         @column_names[names] = options
     end
 
-    # def initialize(hash)
-    #     @column_names.keys.each do |column_name|
-    #         instance_variable_set("@#{column_name}", hash["#{column_name}"])
-    #         p "@#{column_name}"
-    #     end
-    # end
+    def initialize(hash)
+        hash.each_with_index.map { |x,i| instance_variable_set("@#{hash.keys[i]}", hash.values[i]) }
+    end
 
     def self.exist?(hash)
         value = hash["value"]
